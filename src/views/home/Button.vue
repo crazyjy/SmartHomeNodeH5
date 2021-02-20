@@ -7,13 +7,13 @@
                         <el-input v-model="aliasName[index]"></el-input>
                     </div>
                     <div>
-                        <div class="cow-container" @click="pushButton(device, index)">
+                        <div class="cow-container" @change="pushButton(device, index)">
                             <div class="cow-toggle">
                                 <input type="checkbox" v-model="device.Status">
                                 <span class="cow-button">
                                     <div class="button-status-point" v-bind:style="{background: device.Status==1?'#E6A23C':'#67C23A'}"></div>
                                 </span>
-                                <span class="cow-label">{{device.Status==true?'开':'关'}}</span>
+                                <span class="cow-label">{{device.Status?'开':'关'}}</span>
                             </div>
                         </div>
                     </div>
@@ -76,7 +76,7 @@
                                 let device = status.split(":");
                                 this.aliasName[s1] = device[0];
                                 if (device.length == 2) {
-                                    // 展示别名
+                                    // 显示别名
                                     res.data.info.split(',').map((alias, s2) => {
                                         let name = alias.split(":");
                                         if (name.length == 2 && device[0] == name[0] && name[0] != name[1]) {
@@ -92,7 +92,7 @@
                 });
             },
             pushButton(device, index) {
-                let code = "CONTROL/:"+device.Name+"/:"+(device.Status?"OFF":"ON");
+               let code = "CONTROL/:"+device.Name+"/:"+(device.Status?"ON":"OFF");
                 controlButton({data:code, name:device.Name, alias: this.aliasName[index]}).then((res) => {
                     if (res.code == "SUCCESS") {
                         this.$message({
